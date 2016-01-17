@@ -1,4 +1,4 @@
-package terrain.definitions;
+package src.terrain.definitions;
 import openfl.display.BitmapData;
 
 /**
