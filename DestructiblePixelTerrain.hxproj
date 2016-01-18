@@ -6,8 +6,8 @@
     <movie input="" />
     <movie path="project.xml" />
     <movie fps="60" />
-    <movie width="800" />
-    <movie height="480" />
+    <movie width="1284" />
+    <movie height="696" />
     <movie version="1" />
     <movie minorVersion="0" />
     <movie platform="Lime" />
@@ -20,16 +20,16 @@
     <class path="C:\HaxeToolkit\haxe\lib\lime\2,8,3" />
     <class path="C:\HaxeToolkit\haxe\lib\actuate\1,8,6" />
     <class path="src" />
-    <class path="bin\windows\cpp\haxe" />
+    <class path="bin\flash\haxe" />
   </classpaths>
   <!-- Build options -->
   <build>
-    <option directives="openfl=3.5.3&#xA;lime=2.8.3&#xA;actuate=1.8.6&#xA;openfl-next&#xA;tools=2.8.3&#xA;no-compilation&#xA;native&#xA;lime-native&#xA;openfl-native&#xA;windows&#xA;desktop&#xA;display" />
+    <option directives="openfl=3.5.3&#xA;lime=2.8.3&#xA;actuate=1.8.6&#xA;openfl-next&#xA;tools=2.8.3&#xA;no-compilation&#xA;openfl-flash&#xA;web&#xA;display" />
     <option flashStrict="False" />
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="True" />
-    <option additional="--macro openfl.Lib.includeExterns()&#xA;--remap flash:openfl&#xA;#--macro keep(&quot;Main&quot;)&#xA;-debug " />
+    <option additional="--macro openfl.Lib.includeExterns()&#xA;-swf-version 11.2&#xA;-debug " />
   </build>
   <!-- haxelib libraries -->
   <haxelib>

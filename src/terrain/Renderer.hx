@@ -20,7 +20,7 @@ class Renderer extends Bitmap {
 	
 	
 	public function new(width: Int, height: Int) {
-		super(new BitmapData(width, height, false));
+		super(new BitmapData(width, height, true, 0xFF));
 		objects = [];
 		
 		this.rectSize = new Rectangle(0, 0, width, height);
