@@ -1,10 +1,11 @@
-package src.terrain;
+package terrain;
 
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.display.Graphics;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
+import openfl.utils.ByteArray;
 import src.terrain.definitions.IDrawable;
 import openfl.geom.Rectangle;
 
@@ -16,13 +17,11 @@ class Renderer extends Bitmap {
 	
 	private var objects: Array<IDrawable>;
 	public var rectSize: Rectangle;
-	public var dest: Point;
-	
+	public var dest: Point;	
 	
 	public function new(width: Int, height: Int) {
-		super(new BitmapData(width, height, true, 0xFF));
+		super(new BitmapData(width, height));
 		objects = [];
-		
 		this.rectSize = new Rectangle(0, 0, width, height);
 		dest = new Point(0, 0);
 	}
@@ -40,8 +39,11 @@ class Renderer extends Bitmap {
 	}
 	
 	public function render() {
+		bitmapData.lock();
+		bitmapData.fillRect(bitmapData.rect, 0);
 		update();
 		draw();
+		bitmapData.unlock();
 	}
 	
 	public function add(obj: IDrawable) {

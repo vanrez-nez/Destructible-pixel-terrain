@@ -3,7 +3,7 @@ package;
 import openfl.display.Sprite;
 import openfl.Lib;
 import flash.events.Event;
-import src.terrain.TerrainScene;
+import terrain.TerrainScene;
 import tools.Stats;
 /**
  * ...
@@ -41,7 +41,6 @@ class Main extends Sprite
 	
 	public function update(e: Event) {
 		terrainScene.update(e);
-		
 	}
 
 }
