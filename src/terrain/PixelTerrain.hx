@@ -61,7 +61,7 @@ class PixelTerrain implements IDrawable {
 	}
 	
 	private inline function getPixel(x: Int, y: Int): Int {
-		if (x > 0 && x < width && y > 0 && y < height) {
+		if (x >= 0 && x <= width && y >= 0 && y <= height) {
 			return bitmapData.getPixel32(x, y);
 		} else {
 			return 0;
@@ -113,13 +113,13 @@ class PixelTerrain implements IDrawable {
 		
 		var graphics = normalsSprite.graphics;
 		graphics.clear();
-		graphics.beginFill(0x0000FF);
 		graphics.lineStyle(2, 0xFFFF00, 1);
+		
 		var x = 0;
 		var y = 0;
 		graphics.drawCircle(200, 500, 10);
 		while (x < width) {
-			
+			y = 0;
 			while(y < height) {
 				
 				var solidCount = 0;
@@ -134,12 +134,14 @@ class PixelTerrain implements IDrawable {
 					}
 				}
 				
-				
 				if (solidCount < 110 && solidCount > 30) {
 					var pixelNormal: Array<Float> = getNormal(x, y);
-					trace(x, y, x + 10 * pixelNormal[0],  y + 10 * pixelNormal[1]);
-					graphics.moveTo(x, y);
-					graphics.lineTo(x + 10 * pixelNormal[0], y + 10 * pixelNormal[1]);
+
+					if (! Math.isNaN(pixelNormal[0]) && ! Math.isNaN(pixelNormal[1])) {
+						//trace(x, y, x + 10 * pixelNormal[0],  y + 10 * pixelNormal[1]);
+						graphics.moveTo(x, y);
+						graphics.lineTo(x + 10 * pixelNormal[0], y + 10 * pixelNormal[1]);
+					}
 				}
 				y += 10;
 			}
