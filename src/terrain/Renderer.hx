@@ -16,13 +16,11 @@ import openfl.geom.Rectangle;
 class Renderer extends Bitmap {
 	
 	private var objects: Array<IDrawable>;
-	public var rectSize: Rectangle;
 	public var dest: Point;	
 	
 	public function new(width: Int, height: Int) {
 		super(new BitmapData(width, height));
 		objects = [];
-		this.rectSize = new Rectangle(0, 0, width, height);
 		dest = new Point(0, 0);
 	}
 	
@@ -53,5 +51,4 @@ class Renderer extends Bitmap {
 	public function remove(obj: IDrawable) {
 		objects.remove(obj);
 	}
-	
 }

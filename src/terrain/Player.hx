@@ -20,8 +20,9 @@ class Player implements IDrawable {
 	public static var DIRECTION_NONE = 0;
 	
 	private var dimensions: Rectangle;
-	private var clipRect: Rectangle;
 	private var bitmapData:BitmapData;
+	private var transform: Matrix;
+
 	private var dirty: Bool;
 	private var posX: Float;
 	private var posY: Float;
@@ -31,12 +32,13 @@ class Player implements IDrawable {
 	private var shooting: Bool;
 	private var shootingAlt: Bool;
 	private var onGround: Bool;
-	private var transform: Matrix;
 	
 	private var colorModifier = 0;
 	
 	public function new(width: Int = 10, height: Int = 10) {
 		dimensions = new Rectangle(0, 0, width, height);
+		bitmapData = new BitmapData(width, height, false);
+		transform = new Matrix();
 		posX = 0;
 		posY = 0;
 		velX = 0;
@@ -46,26 +48,14 @@ class Player implements IDrawable {
 	}
 	
 	public function drawTo(bd: BitmapData): Void {
-		
-		//bitmapData.lock();
-		
-		var color = Std.int(Math.random() * 0x1000000);
-		for (idx in 0...10000) {
-			bd.setPixel32(Std.int(Math.random() * 1024), Std.int(Math.random() * 768), 0xFFFFFFFF);
-		}
-		//bitmapData.unlock();
-		//bd.draw(bitmapData, new Matrix(1, 0, 0, 1, posX, posY));
-		//bd.copyPixels(bitmapData, dimensions, new Point(posX, posY));
-		//aData.position = 0;
-		//bd.setPixels(dimensions, aData);
+		bd.draw(bitmapData, transform);
 	}
 	
 	public function update(): Void {
 		if (dirty) {
-			var color = Std.int(Math.random() * 0x1000000);
-			//posX = Math.random() * 1024;
-			//posY = Math.random() * 768;
-			//bitmapData.fillRect(dimensions, color);
+			transform.tx = posX;
+			transform.ty = posY;
+			bitmapData.fillRect(dimensions, 0xFFF);
 			dirty = false;
 		}
 	}
@@ -85,6 +75,7 @@ class Player implements IDrawable {
 		
 	public function walkTo(direction: Int) {
 		posX += direction;
+		dirty = true;
 	}
 	
 }

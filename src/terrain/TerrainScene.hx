@@ -13,6 +13,8 @@ import terrain.Renderer;
 import terrain.PixelTerrain;
 import terrain.Controls;
 
+import openfl.events.MouseEvent;
+import openfl.Lib;
 
 /**
  * ...
@@ -41,13 +43,20 @@ class TerrainScene extends Sprite {
 		renderer = new Renderer(1024, 768);
 		this.addChild(renderer);
 		pixelTerrain = new PixelTerrain('img/more-trees.png', 2);
+		pixelTerrain.normalsVisible = true;
 		renderer.add(pixelTerrain);
 		
-		player = new Player(1024, 768);
+		Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		
+		player = new Player(15, 25);
 		renderer.add(player);
 		
 		controls = new Controls();
 		controls.addPlayer(player);
+	}
+	
+	private function onMouseDown(e: MouseEvent) {
+		trace(pixelTerrain.isPixelSolid(Std.int(e.stageX), Std.int(e.stageY)));
 	}
 	
 	public function update(e: Event) {
