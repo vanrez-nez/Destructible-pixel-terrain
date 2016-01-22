@@ -1,7 +1,7 @@
 package terrain;
 
-import openfl.events.MouseEvent;
 import openfl.Lib;
+import openfl.events.MouseEvent;
 import openfl.events.KeyboardEvent;
 import openfl.ui.Keyboard;
 

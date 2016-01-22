@@ -5,7 +5,6 @@ import openfl.display.BitmapData;
 import openfl.display.Graphics;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
-import openfl.utils.ByteArray;
 import src.terrain.definitions.IDrawable;
 import openfl.geom.Rectangle;
 

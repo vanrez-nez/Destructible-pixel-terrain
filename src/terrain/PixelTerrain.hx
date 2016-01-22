@@ -1,15 +1,9 @@
 package terrain;
 
-import lime.math.Rectangle;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
-import openfl.geom.Point;
-import openfl.utils.ByteArray;
 import src.terrain.definitions.IDrawable;
-import openfl.events.MouseEvent;
 import openfl.Assets;
-import openfl.Lib;
-import openfl.Memory;
 /**
  * ...
  * @author Ivan Juarez
@@ -20,6 +14,7 @@ class PixelTerrain implements IDrawable {
 	private var destructionRes: Int;
 	public var normalsVisible: Bool;
 	public var normalsDirty: Bool;
+	
 	public var width(get, never): Int;
 	public var height(get, never): Int;
 	
@@ -117,7 +112,6 @@ class PixelTerrain implements IDrawable {
 		
 		var x = 0;
 		var y = 0;
-		graphics.drawCircle(200, 500, 10);
 		while (x < width) {
 			y = 0;
 			while(y < height) {
@@ -147,7 +141,6 @@ class PixelTerrain implements IDrawable {
 			}
 			x += 10;
 		}
-		graphics.endFill();
 		normalsDirty = false;
 	}
 	
