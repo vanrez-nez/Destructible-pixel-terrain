@@ -12,6 +12,7 @@ import terrain.Player;
 import terrain.Renderer;
 import terrain.PixelTerrain;
 import terrain.Controls;
+import terrain.Physics;
 
 import openfl.events.MouseEvent;
 import openfl.Lib;
@@ -28,6 +29,7 @@ class TerrainScene extends Sprite {
 	private var controls: Controls;
 	private var cloudsBackground: Bitmap;
 	private var pixelTerrain: PixelTerrain;
+	private var physics: Physics;
 	public var bitmap: Bitmap;
 	
 	public function new() {
@@ -40,19 +42,24 @@ class TerrainScene extends Sprite {
 		cloudsBackground = new Bitmap(Assets.getBitmapData('img/clouds.jpg'));
 		this.addChild(cloudsBackground);
 		
-		renderer = new Renderer(1024, 768);
+		renderer = new Renderer(1284, 768);
 		this.addChild(renderer);
-		pixelTerrain = new PixelTerrain('img/more-trees.png', 2);
-		pixelTerrain.normalsVisible = true;
-		renderer.add(pixelTerrain);
 		
-		Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+		pixelTerrain = new PixelTerrain('img/more-trees.png', 2);
+		//pixelTerrain.normalsVisible = true;
+		renderer.add(pixelTerrain);
 		
 		player = new Player(15, 25);
 		renderer.add(player);
 		
+		physics = new Physics();
+		physics.add(player);
+		
 		controls = new Controls();
 		controls.addPlayer(player);
+		
+		
+		Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 	}
 	
 	private function onMouseDown(e: MouseEvent) {
@@ -60,6 +67,7 @@ class TerrainScene extends Sprite {
 	}
 	
 	public function update(e: Event) {
+		physics.update( pixelTerrain );
 		renderer.render();
 	}
 	
