@@ -28,6 +28,7 @@ class Player implements IDrawable implements IPhysicsEntity {
 	public var vX: Float;
 	public var vY: Float;
 	public var onGround: Bool;
+	public var topBlocked: Bool;
 	
 	private var width(get, never): Float;
 	private var height(get, never): Float;
@@ -46,6 +47,7 @@ class Player implements IDrawable implements IPhysicsEntity {
 		vY = 0;
 		dirty = true;
 		onGround = false;
+		topBlocked = false;
 	}
 	
 	public function drawTo(bd: BitmapData): Void {
@@ -62,7 +64,11 @@ class Player implements IDrawable implements IPhysicsEntity {
 	}
 	
 	public function jump() {
-		dirty = true;
+		if (onGround && !topBlocked && vY > -500) {
+			onGround = false;
+			vY -= 500;
+			dirty = true;
+		}
 	}
 	
 	public function shoot(active: Bool) {
@@ -88,13 +94,13 @@ class Player implements IDrawable implements IPhysicsEntity {
 			vX += 40 * walkingDirection;
 		
 		// Player pixel collision detection against terrain
+		
+		// Bottom edge
 		onGround = false;
-		var height4 = height / 4;
-
 		for ( pX in Std.int( x )...Std.int( x + width ) ) {
 			if ( terrain.isPixelSolid( pX, Std.int( y + height ) ) && vY > 0 ) {
 				onGround = true;
-				var pY = Std.int( y + height * 0.75);
+				var pY = Std.int( y + height * 0.75 );
 				while ( pY++ < y + height ) {
 					if ( terrain.isPixelSolid( pX, pY ) ) {
 						y = pY - height;
@@ -103,6 +109,67 @@ class Player implements IDrawable implements IPhysicsEntity {
 				}
 				if (vY > 0)
 					vY *= -0.25;
+			}
+		}
+		
+		// Top edge
+		topBlocked = false;
+		for ( pX in Std.int( x )...Std.int( x + width ) ) {
+			if ( terrain.isPixelSolid( pX, Std.int( y - 1 ) ) ) {
+				topBlocked = true;
+				if ( vY < 0 ) {
+					vY *= -0.5;
+				}
+			}
+		}
+		
+		// Left edge
+		if ( vX < 0 ) {
+			for ( pY in Std.int( y )...Std.int( y + height ) ) {
+				if ( terrain.isPixelSolid( Std.int( x ), pY ) ) {
+					
+					// start from 1/4 of the left edge
+					var pX = Std.int( x + width * 0.25 );
+					while ( x > pX ) {
+						pX--;
+						if ( terrain.isPixelSolid( pX, pY ) ) {
+							x = pX;
+							break;
+						}
+					}
+					// try climb over obstacle
+					if ( pY  > Std.int( y + height * 0.5 ) && !topBlocked ) {
+						y -= 1;
+					} else {
+						vX *= -0.4;
+						x += 2;
+					}
+				}
+			}
+		}
+		
+		// Right edge
+		if ( vX > 0 ) {
+			for ( pY in Std.int( y )...Std.int( y + height ) ) {
+				if ( terrain.isPixelSolid( Std.int( x + width ), pY ) ) {
+					
+					// start from 1/4 of the right edge
+					var pX = Std.int( x + width * 0.75 );
+					while ( Std.int( x + width ) < pX ) {
+						pX++;
+						if ( terrain.isPixelSolid( pX, pY ) ) {
+							x = pX;
+							break;
+						}
+					}
+					// try climb over obstacle
+					if ( pY  > Std.int( y + height * 0.5 ) && !topBlocked ) {
+						y -= 1;
+					} else {
+						vX *= -0.4;
+						x -= 2;
+					}
+				}
 			}
 		}
 			

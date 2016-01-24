@@ -50,17 +50,7 @@ class Physics {
 			for ( obj in objects ) {
 				obj.vY += 980 * DELTA_TIME_SEC;
 				obj.x += obj.vX * DELTA_TIME_SEC;
-				
-				// update the player's gravity fall
-				if ( Std.is( obj, Player ) ) {
-					var player = cast( obj, Player );
-					if ( ! player.onGround && player.vY > 0 ) {
-						player.y += player.vY * DELTA_TIME_SEC;
-					}
-				} else {
-					obj.y += obj.vY * DELTA_TIME_SEC;
-				}
-				
+				obj.y += obj.vY * DELTA_TIME_SEC;
 				obj.checkConstrains( terrain );
 			}
 			
