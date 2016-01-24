@@ -82,10 +82,31 @@ class Player implements IDrawable implements IPhysicsEntity {
 	public function checkConstrains( terrain: PixelTerrain ) {
 		dirty = true;
 		
+		// update movement
 		vX *= 0.8;
 		if ( vX > -500 && vX < 500 )
 			vX += 40 * walkingDirection;
 		
+		// Player pixel collision detection against terrain
+		onGround = false;
+		var height4 = height / 4;
+
+		for ( pX in Std.int( x )...Std.int( x + width ) ) {
+			if ( terrain.isPixelSolid( pX, Std.int( y + height ) ) && vY > 0 ) {
+				onGround = true;
+				var pY = Std.int( y + height * 0.75);
+				while ( pY++ < y + height ) {
+					if ( terrain.isPixelSolid( pX, pY ) ) {
+						y = pY - height;
+						break;
+					}
+				}
+				if (vY > 0)
+					vY *= -0.25;
+			}
+		}
+			
+		// screen boundary checks
 		if ( vX != 0 ) {
 			
 			if ( x + width > terrain.width ) {
