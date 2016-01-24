@@ -7,4 +7,5 @@ import openfl.display.BitmapData;
 interface IDrawable {
 	public function drawTo(bitmapData: BitmapData): Void;
 	public function update(): Void;
+	public var disposed: Bool;
 }

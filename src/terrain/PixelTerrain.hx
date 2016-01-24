@@ -14,6 +14,7 @@ class PixelTerrain implements IDrawable {
 	private var destructionRes: Int;
 	public var normalsVisible: Bool;
 	public var normalsDirty: Bool;
+	public var disposed: Bool;
 	
 	public var width( get, never ): Int;
 	public var height( get, never ): Int;
@@ -23,6 +24,7 @@ class PixelTerrain implements IDrawable {
 		normalsSprite = new Sprite();
 		normalsVisible = false;
 		normalsDirty = true;
+		disposed = false;
 		processMapMask( imgPath );
 	}
 	
@@ -85,7 +87,7 @@ class PixelTerrain implements IDrawable {
 		return getPixel( x, y );
 	}
 	
-	private function getNormal( x: Int, y: Int ): Array<Float> {
+	public function getNormal( x: Int, y: Int ): Array<Float> {
 		var avgX: Float = 0;
 		var avgY: Float = 0;
 		for ( w in -3...4 ) {

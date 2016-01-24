@@ -8,5 +8,6 @@ interface IPhysicsEntity {
 	public var y: Float;
 	public var vX: Float;
 	public var vY: Float;
+	public var disposed: Bool;
 	public function checkConstrains(terrain: PixelTerrain): Void;
 }

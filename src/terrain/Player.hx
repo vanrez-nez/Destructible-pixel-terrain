@@ -27,6 +27,7 @@ class Player implements IDrawable implements IPhysicsEntity {
 	public var y: Float;
 	public var vX: Float;
 	public var vY: Float;
+	public var disposed: Bool;
 	public var onGround: Bool;
 	public var topBlocked: Bool;
 	
@@ -45,6 +46,7 @@ class Player implements IDrawable implements IPhysicsEntity {
 		y = 0;
 		vX = 0;
 		vY = 0;
+		disposed = false;
 		dirty = true;
 		onGround = false;
 		topBlocked = false;
