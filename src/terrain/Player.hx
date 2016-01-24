@@ -30,16 +30,16 @@ class Player implements IDrawable implements IPhysicsEntity {
 	public var onGround: Bool;
 	public var topBlocked: Bool;
 	
-	private var width(get, never): Float;
-	private var height(get, never): Float;
+	private var width( get, never ): Float;
+	private var height( get, never ): Float;
 	
 	private var walkingDirection: Int;
 	private var shooting: Bool;
 	private var shootingAlt: Bool;
 	
 	
-	public function new(width: Int = 10, height: Int = 10) {
-		bitmapData = new BitmapData(width, height, false);
+	public function new( width: Int = 10, height: Int = 10 ) {
+		bitmapData = new BitmapData( width, height, false );
 		transform = new Matrix();
 		x = 0;
 		y = 0;
@@ -50,15 +50,15 @@ class Player implements IDrawable implements IPhysicsEntity {
 		topBlocked = false;
 	}
 	
-	public function drawTo(bd: BitmapData): Void {
-		bd.draw(bitmapData, transform);
+	public function drawTo( bd: BitmapData ): Void {
+		bd.draw( bitmapData, transform );
 	}
 	
 	public function update(): Void {
-		if (dirty) {
+		if ( dirty ) {
 			transform.tx = x;
 			transform.ty = y;
-			bitmapData.fillRect(new Rectangle(0, 0, width, height), 0xFFF);
+			bitmapData.fillRect( new Rectangle( 0, 0, width, height ), 0xFFF );
 			dirty = false;
 		}
 	}
@@ -67,22 +67,19 @@ class Player implements IDrawable implements IPhysicsEntity {
 		if (onGround && !topBlocked && vY > -500) {
 			onGround = false;
 			vY -= 500;
-			dirty = true;
 		}
 	}
 	
-	public function shoot(active: Bool) {
+	public function shoot( active: Bool ) {
 		shooting = active;
-		dirty = true;
 	}
 	
-	public function shootAlt(active: Bool) {
+	public function shootAlt( active: Bool ) {
 		shootingAlt = active;
 	}
 		
-	public function walkTo(direction: Int) {
+	public function walkTo( direction: Int ) {
 		walkingDirection = direction;
-		dirty = true;
 	}
 	
 	public function checkConstrains( terrain: PixelTerrain ) {

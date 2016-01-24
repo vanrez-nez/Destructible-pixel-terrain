@@ -39,33 +39,33 @@ class TerrainScene extends Sprite {
 	
 	public function init() {
 		
-		cloudsBackground = new Bitmap(Assets.getBitmapData('img/clouds.png'));
-		this.addChild(cloudsBackground);
+		cloudsBackground = new Bitmap( Assets.getBitmapData('img/clouds.png' ) );
+		this.addChild( cloudsBackground );
 		
-		renderer = new Renderer(1024, 500);
-		this.addChild(renderer);
+		renderer = new Renderer( 1024, 500 );
+		this.addChild( renderer );
 		
-		pixelTerrain = new PixelTerrain('img/more-trees.png', 2);
+		pixelTerrain = new PixelTerrain( 'img/more-trees.png', 2 );
 		//pixelTerrain.normalsVisible = true;
-		renderer.add(pixelTerrain);
+		renderer.add( pixelTerrain );
 		
-		player = new Player(15, 25);
-		renderer.add(player);
+		player = new Player( 15, 25 );
+		renderer.add( player );
 		
 		physics = new Physics();
-		physics.add(player);
+		physics.add( player );
 		
 		controls = new Controls();
-		controls.addPlayer(player);
+		controls.addPlayer( player );
 		
 		Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 	}
 	
-	private function onMouseDown(e: MouseEvent) {
-		trace(pixelTerrain.isPixelSolid(Std.int(e.stageX), Std.int(e.stageY)));
+	private function onMouseDown( e: MouseEvent ) {
+		trace( pixelTerrain.isPixelSolid( Std.int( e.stageX ), Std.int( e.stageY ) ) );
 	}
 	
-	public function update(e: Event) {
+	public function update( e: Event ) {
 		physics.update( pixelTerrain );
 		renderer.render();
 	}

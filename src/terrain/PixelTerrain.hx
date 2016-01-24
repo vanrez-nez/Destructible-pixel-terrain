@@ -15,39 +15,39 @@ class PixelTerrain implements IDrawable {
 	public var normalsVisible: Bool;
 	public var normalsDirty: Bool;
 	
-	public var width(get, never): Int;
-	public var height(get, never): Int;
+	public var width( get, never ): Int;
+	public var height( get, never ): Int;
 	
-	public function new(imgPath: String, destructionRes: Int) {
+	public function new( imgPath: String, destructionRes: Int ) {
 		this.destructionRes = destructionRes;
 		normalsSprite = new Sprite();
 		normalsVisible = false;
 		normalsDirty = true;
-		processMapMask(imgPath);
+		processMapMask( imgPath );
 	}
 	
-	private function processMapMask(imgPath: String) {
+	private function processMapMask( imgPath: String ) {
 		var mask = 0xFFFF00FF; // argb(255, 255, 0, 255)
-		var bdOrigin:BitmapData = Assets.getBitmapData(imgPath);
-		bitmapData = new BitmapData(bdOrigin.width, bdOrigin.height, true, 0);
+		var bdOrigin:BitmapData = Assets.getBitmapData( imgPath );
+		bitmapData = new BitmapData( bdOrigin.width, bdOrigin.height, true, 0 );
 		bitmapData.lock();
-		for (x in 0...width) {
-			for (y in 0...height) {
-				var pixel = bdOrigin.getPixel32(x, y);
-				if (pixel == mask) {
-					bitmapData.setPixel32(x, y, 0);
+		for ( x in 0...width ) {
+			for ( y in 0...height ) {
+				var pixel = bdOrigin.getPixel32( x, y );
+				if ( pixel == mask ) {
+					bitmapData.setPixel32( x, y, 0 );
 				} else {
-					bitmapData.setPixel32(x, y, pixel);
+					bitmapData.setPixel32( x, y, pixel );
 				}
 			}
 		}
 		bitmapData.unlock();
 	}
 	
-	public function drawTo(bd: BitmapData): Void {
-		bd.draw(bitmapData);
-		if (normalsVisible) {
-			bd.draw(normalsSprite);
+	public function drawTo( bd: BitmapData ): Void {
+		bd.draw( bitmapData );
+		if ( normalsVisible ) {
+			bd.draw( normalsSprite );
 		}
 	}
 	
@@ -55,86 +55,86 @@ class PixelTerrain implements IDrawable {
 		this.updateNormals();
 	}
 	
-	private inline function getPixel(x: Int, y: Int): Int {
-		if (x >= 0 && x <= width && y >= 0 && y <= height) {
-			return bitmapData.getPixel32(x, y);
+	private inline function getPixel( x: Int, y: Int ): Int {
+		if ( x >= 0 && x <= width && y >= 0 && y <= height ) {
+			return bitmapData.getPixel32( x, y );
 		} else {
 			return 0;
 		}
 	}
 	
-	private inline function setPixel(x: Int, y: Int, color: Int) {
-		if (x > 0 && x < width && y > 0 && y < height) {
-			bitmapData.setPixel32(x, y, color);
+	private inline function setPixel( x: Int, y: Int, color: Int ) {
+		if ( x > 0 && x < width && y > 0 && y < height ) {
+			bitmapData.setPixel32( x, y, color );
 		}
 	}
 	
-	public function isPixelSolid(x: Int, y: Int ): Bool {
-		return getPixel(x, y) != 0;
+	public function isPixelSolid( x: Int, y: Int ): Bool {
+		return getPixel( x, y ) != 0;
 	}
 	
-	public function addPixel(x: Int, y: Int, color: Int) {
-		setPixel(x, y, color);
+	public function addPixel( x: Int, y: Int, color: Int ) {
+		setPixel( x, y, color );
 	}
 	
 	public function removePixel(x: Int, y: Int) {
 		setPixel(x, y, 0);
 	}
 	
-	public function getColor(x: Int, y: Int): Int {
-		return getPixel(x, y);
+	public function getColor( x: Int, y: Int ): Int {
+		return getPixel( x, y );
 	}
 	
-	private function getNormal(x: Int, y: Int): Array<Float> {
+	private function getNormal( x: Int, y: Int ): Array<Float> {
 		var avgX: Float = 0;
 		var avgY: Float = 0;
-		for (w in -3...4) {
-			for (h in -3...4) {
-				if (isPixelSolid(x + w, y + h)) {
+		for ( w in -3...4 ) {
+			for ( h in -3...4 ) {
+				if ( isPixelSolid( x + w, y + h ) ) {
 					avgX -= w;
 					avgY -= h;
 				}
 			}
 		}
-		var len = Math.sqrt(avgX * avgX + avgY * avgY);
-		return [avgX/len, avgY/len];
+		var len = Math.sqrt( avgX * avgX + avgY * avgY );
+		return [ avgX / len, avgY / len ];
 	}
 	
 	
 	private function updateNormals() {
-		if (! normalsDirty) {
+		if (! normalsDirty ) {
 			return;
 		}
 		
 		var graphics = normalsSprite.graphics;
 		graphics.clear();
-		graphics.lineStyle(2, 0xFFFF00, 1);
+		graphics.lineStyle( 2, 0xFFFF00, 1 );
 		
 		var x = 0;
 		var y = 0;
-		while (x < width) {
+		while ( x < width ) {
 			y = 0;
-			while(y < height) {
+			while( y < height ) {
 				
 				var solidCount = 0;
 				
-				for (i in -5...6) {
-					for (j in -5...6) {
+				for ( i in -5...6 ) {
+					for ( j in -5...6 ) {
 						
-						if (isPixelSolid(x + i, y + j)) {
+						if ( isPixelSolid( x + i, y + j ) ) {
 							solidCount++;
 						}
 						
 					}
 				}
 				
-				if (solidCount < 110 && solidCount > 30) {
-					var pixelNormal: Array<Float> = getNormal(x, y);
+				if ( solidCount < 110 && solidCount > 30 ) {
+					var pixelNormal: Array<Float> = getNormal( x, y );
 
-					if (! Math.isNaN(pixelNormal[0]) && ! Math.isNaN(pixelNormal[1])) {
+					if (! Math.isNaN( pixelNormal[0] ) && ! Math.isNaN( pixelNormal[1] ) ) {
 						//trace(x, y, x + 10 * pixelNormal[0],  y + 10 * pixelNormal[1]);
-						graphics.moveTo(x, y);
-						graphics.lineTo(x + 10 * pixelNormal[0], y + 10 * pixelNormal[1]);
+						graphics.moveTo( x, y );
+						graphics.lineTo( x + 10 * pixelNormal[0], y + 10 * pixelNormal[1] );
 					}
 				}
 				y += 10;

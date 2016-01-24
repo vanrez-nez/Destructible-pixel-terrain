@@ -17,37 +17,37 @@ class Renderer extends Bitmap {
 	private var objects: Array<IDrawable>;
 	public var dest: Point;	
 	
-	public function new(width: Int, height: Int) {
-		super(new BitmapData(width, height));
+	public function new( width: Int, height: Int ) {
+		super( new BitmapData( width, height ) );
 		objects = [];
-		dest = new Point(0, 0);
+		dest = new Point( 0, 0 );
 	}
 	
 	private function update() {
-		for (obj in objects) {
+		for ( obj in objects ) {
 			obj.update();
 		}
 	}
 	
 	private function draw() {
-		for (obj in objects) {
-			obj.drawTo(this.bitmapData);
+		for ( obj in objects ) {
+			obj.drawTo( this.bitmapData );
 		}
 	}
 	
 	public function render() {
 		bitmapData.lock();
-		bitmapData.fillRect(bitmapData.rect, 0);
+		bitmapData.fillRect( bitmapData.rect, 0 );
 		update();
 		draw();
 		bitmapData.unlock();
 	}
 	
-	public function add(obj: IDrawable) {
-		objects.push(obj);
+	public function add( obj: IDrawable ) {
+		objects.push( obj );
 	}
 	
-	public function remove(obj: IDrawable) {
-		objects.remove(obj);
+	public function remove( obj: IDrawable ) {
+		objects.remove( obj );
 	}
 }
