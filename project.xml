@@ -9,7 +9,7 @@
 	<app main="Main" file="DestructiblePixelTerrain" path="bin" />
 	
 	<window background="#000000" fps="60" hardware="true" />
-	<window width="1284" height="696" unless="mobile" />
+	<window width="1024" height="500" unless="mobile" />
 	<window orientation="landscape" vsync="false" antialiasing="0" if="cpp" />
 	
 	<!-- classpath, haxe libs -->

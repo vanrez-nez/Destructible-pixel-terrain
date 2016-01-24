@@ -4,9 +4,9 @@ import terrain.PixelTerrain;
  * @author Ivan Juarez
  */
 interface IPhysicsEntity {
-	public var posX(default, set): Float;
-	public var posY(default, set): Float;
-	public var velX(default, default): Float;
-	public var velY(default, default): Float;
+	public var x: Float;
+	public var y: Float;
+	public var vX: Float;
+	public var vY: Float;
 	public function checkConstrains(terrain: PixelTerrain): Void;
 }

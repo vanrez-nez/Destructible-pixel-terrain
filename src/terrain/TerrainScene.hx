@@ -39,10 +39,10 @@ class TerrainScene extends Sprite {
 	
 	public function init() {
 		
-		cloudsBackground = new Bitmap(Assets.getBitmapData('img/clouds.jpg'));
+		cloudsBackground = new Bitmap(Assets.getBitmapData('img/clouds.png'));
 		this.addChild(cloudsBackground);
 		
-		renderer = new Renderer(1284, 768);
+		renderer = new Renderer(1024, 500);
 		this.addChild(renderer);
 		
 		pixelTerrain = new PixelTerrain('img/more-trees.png', 2);
@@ -57,7 +57,6 @@ class TerrainScene extends Sprite {
 		
 		controls = new Controls();
 		controls.addPlayer(player);
-		
 		
 		Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 	}
