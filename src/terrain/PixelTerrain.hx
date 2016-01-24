@@ -146,6 +146,11 @@ class PixelTerrain implements IDrawable {
 		normalsDirty = false;
 	}
 	
+	public function explode( x: Int, y: Int, radius: Int ) {
+		var radiusSq = radius * radius;
+		
+	}
+	
 	public function get_width() return bitmapData.width;
 	public function get_height() return bitmapData.height;
 	
