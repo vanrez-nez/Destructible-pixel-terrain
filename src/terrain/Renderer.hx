@@ -23,22 +23,27 @@ class Renderer extends Bitmap {
 		dest = new Point( 0, 0 );
 	}
 	
-	private function update() {
-		for ( obj in objects ) {
-			obj.update();
-		}
-	}
-	
 	private function draw() {
-		for ( obj in objects ) {
-			obj.drawTo( this.bitmapData );
+		
+		var idx = objects.length;
+		while ( idx-- > 0 ) {
+			
+			var obj = objects[ idx ];
+			
+			if ( obj.disposed ) {
+				remove( obj );
+				
+			} else {
+				obj.update();
+				obj.drawTo( this.bitmapData );
+			}
+			
 		}
 	}
 	
 	public function render() {
 		bitmapData.lock();
 		bitmapData.fillRect( bitmapData.rect, 0 );
-		update();
 		draw();
 		bitmapData.unlock();
 	}
