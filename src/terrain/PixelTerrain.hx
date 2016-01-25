@@ -148,6 +148,7 @@ class PixelTerrain implements IDrawable {
 	
 	public function explode( x: Int, y: Int, radius: Int ) {
 		var radiusSq = radius * radius;
+		trace('Explode:', x, y);
 		
 	}
 	
