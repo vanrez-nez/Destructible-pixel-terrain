@@ -21,7 +21,7 @@ import openfl.Lib;
  * ...
  * @author Ivan Juarez
  */
-class TerrainScene extends Sprite {
+class TerrainScene extends Sprite  {
 	
 	
 	private var renderer: Renderer;
@@ -40,7 +40,7 @@ class TerrainScene extends Sprite {
 	public function init() {
 		
 		cloudsBackground = new Bitmap( Assets.getBitmapData('img/clouds.png' ) );
-		this.addChild( cloudsBackground );
+		//this.addChild( cloudsBackground );
 		
 		renderer = new Renderer( 1024, 500 );
 		this.addChild( renderer );
@@ -50,6 +50,8 @@ class TerrainScene extends Sprite {
 		renderer.add( pixelTerrain );
 		
 		player = new Player( 15, 25 );
+		player.addBulletDelegate = onAddBullet;
+		player.addDynamicPixelDelegate = onAddDynamicPixel;
 		renderer.add( player );
 		
 		physics = new Physics();
@@ -61,11 +63,24 @@ class TerrainScene extends Sprite {
 		Lib.current.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 	}
 	
+	public function onAddBullet( x: Float, y: Float, vX: Float, vY: Float ) {
+		var bullet = new Bullet( x, y, vX, vY );
+		renderer.add( bullet );
+		physics.add( bullet );
+	}
+	
+	public function onAddDynamicPixel( x: Float, y: Float, vX: Float, vY: Float, color: Int, size: Int ) {
+		trace('Dynamic!');
+		//var dPixel = new DynamicPixel( 
+	}
+	
 	private function onMouseDown( e: MouseEvent ) {
-		trace( pixelTerrain.isPixelSolid( Std.int( e.stageX ), Std.int( e.stageY ) ) );
+		
+		//trace( pixelTerrain.isPixelSolid( Std.int( e.stageX ), Std.int( e.stageY ) ) );
 	}
 	
 	public function update( e: Event ) {
+		
 		physics.update( pixelTerrain );
 		renderer.render();
 	}

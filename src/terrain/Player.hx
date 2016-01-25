@@ -1,5 +1,6 @@
 package terrain;
 
+import haxe.Constraints.Function;
 import openfl.display.BitmapData;
 import openfl.geom.Matrix;
 import openfl.geom.Point;
@@ -7,11 +8,18 @@ import openfl.geom.Rectangle;
 import src.terrain.definitions.IDrawable;
 import terrain.definitions.IPhysicsEntity;
 import terrain.PixelTerrain;
+import haxe.Timer;
 
 /**
  * ...
  * @author Ivan Juarez
  */
+
+//x: Float, y: Float, vX: Float, vY: Float
+typedef TBulletDelegate = Float->Float->Float->Float->Void;
+
+//x: Float, y: Float, vX: Float, vY: Float, color: Int, size: Int
+typedef TDynamicPixelDelegate = Float->Float->Float->Float->Int->Int->Void;
 
 class Player implements IDrawable implements IPhysicsEntity {
 	
@@ -31,13 +39,18 @@ class Player implements IDrawable implements IPhysicsEntity {
 	public var onGround: Bool;
 	public var topBlocked: Bool;
 	
+	public var addBulletDelegate: TBulletDelegate;
+	public var addDynamicPixelDelegate: TDynamicPixelDelegate;
+	
 	private var width( get, never ): Float;
 	private var height( get, never ): Float;
 	
 	private var walkingDirection: Int;
 	private var shooting: Bool;
 	private var shootingAlt: Bool;
-	
+	private var shootTargetX: Int;
+	private var shootTargetY: Int;
+	private var lastShootTime: Float;
 	
 	public function new( width: Int = 10, height: Int = 10 ) {
 		bitmapData = new BitmapData( width, height, false );
@@ -46,6 +59,7 @@ class Player implements IDrawable implements IPhysicsEntity {
 		y = 0;
 		vX = 0;
 		vY = 0;
+		lastShootTime = 0;
 		disposed = false;
 		dirty = true;
 		onGround = false;
@@ -72,11 +86,16 @@ class Player implements IDrawable implements IPhysicsEntity {
 		}
 	}
 	
-	public function shoot( active: Bool ) {
+	public function setShootTargetTo( x: Float, y: Float ) {
+		shootTargetX = Std.int( x );
+		shootTargetY = Std.int( y );
+	}
+	
+	public function shoot( active: Bool) {
 		shooting = active;
 	}
 	
-	public function shootAlt( active: Bool ) {
+	public function shootAlt( active: Bool) {
 		shootingAlt = active;
 	}
 		
@@ -84,8 +103,50 @@ class Player implements IDrawable implements IPhysicsEntity {
 		walkingDirection = direction;
 	}
 	
+	private inline function random( min: Float, max: Float ) {
+		return Math.random() * (max - min) + min;
+	}
+	
+	private function getRandomVelocity( distance: Float ) {
+		return random( -50, 50 ) + random( 1500, 2500 ) * distance;
+	}
+	
 	public function checkConstrains( terrain: PixelTerrain ) {
 		dirty = true;
+		
+		// update shooting
+		if ( shooting || shootingAlt ) {
+			var cTimeMs = Timer.stamp() * 1000;
+			var deltaShoot = cTimeMs - lastShootTime;
+			
+			if ( ( shooting && deltaShoot > 150 )  || ( shootingAlt && deltaShoot > 15 ) ) {
+				
+				var dX = shootTargetX - x;
+				var dY = shootTargetY - y;
+				var len = Math.sqrt( dX * dX + dY * dY );
+				var normalDistanceX = dX / len;
+				var normalDistanceY = dY / len;
+				
+				if (shooting) {
+					addBulletDelegate( x, y, 2000 * normalDistanceX, 2000 * normalDistanceY );
+					
+				} else {
+					
+					for ( i in 0...150 ) {
+						//var color = Std.int( ( cTimeMs / 5000 ) % 255 );
+						addDynamicPixelDelegate(
+							x, y,
+							getRandomVelocity( normalDistanceX ),
+							getRandomVelocity( normalDistanceY ),
+							0xFF000000,
+							50
+						);
+					}
+				}
+				lastShootTime = cTimeMs;
+			}
+			
+		}
 		
 		// update movement
 		vX *= 0.8;
