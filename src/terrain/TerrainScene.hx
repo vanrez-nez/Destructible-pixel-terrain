@@ -40,7 +40,7 @@ class TerrainScene extends Sprite  {
 	public function init() {
 		
 		cloudsBackground = new Bitmap( Assets.getBitmapData('img/clouds.png' ) );
-		//this.addChild( cloudsBackground );
+		this.addChild( cloudsBackground );
 		
 		renderer = new Renderer( 1024, 500 );
 		this.addChild( renderer );
@@ -70,8 +70,10 @@ class TerrainScene extends Sprite  {
 	}
 	
 	public function onAddDynamicPixel( x: Float, y: Float, vX: Float, vY: Float, color: Int, size: Int ) {
-		trace('Dynamic!');
-		//var dPixel = new DynamicPixel( 
+		//trace('Dynamic!');
+		var dPixel = new DynamicPixel( x, y, vX, vY, color, size );
+		renderer.add( dPixel );
+		physics.add( dPixel );
 	}
 	
 	private function onMouseDown( e: MouseEvent ) {

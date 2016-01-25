@@ -15,12 +15,10 @@ import openfl.geom.Rectangle;
 class Renderer extends Bitmap {
 	
 	private var objects: Array<IDrawable>;
-	public var dest: Point;	
 	
 	public function new( width: Int, height: Int ) {
 		super( new BitmapData( width, height ) );
 		objects = [];
-		dest = new Point( 0, 0 );
 	}
 	
 	private function draw() {

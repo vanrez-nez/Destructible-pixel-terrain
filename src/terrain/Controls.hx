@@ -51,6 +51,7 @@ class Controls {
 	
 	private function onMouseUpDown(e: MouseEvent) {
 		player.setShootTargetTo( e.stageX, e.stageY );
+		trace('mouseDown:', e.type); 
 		player.shoot( e.type == MouseEvent.MOUSE_DOWN );
 		player.shootAlt( e.type == MouseEvent.RIGHT_MOUSE_DOWN );
 	}

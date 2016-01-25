@@ -1,5 +1,6 @@
 package terrain;
 
+import openfl.geom.Rectangle;
 import openfl.display.BitmapData;
 import src.terrain.definitions.IDrawable;
 import terrain.definitions.IPhysicsEntity;
@@ -11,8 +12,8 @@ import terrain.PixelTerrain;
  */
 class DynamicPixel implements IDrawable implements IPhysicsEntity {
 	
-	public static var STICKINESS = 1500 * 1500;
-	public static var BOUNCE_DAMPING = 0.85;
+	public static var STICKINESS = 900 * 900;
+	public static var BOUNCE_DAMPING = 0.75;
 	
 	public var x: Float;
 	public var y: Float;
@@ -50,10 +51,12 @@ class DynamicPixel implements IDrawable implements IPhysicsEntity {
 		if ( collision.length > 0 )
 			collide( collision, terrain );
 		
-		lastX = 0;
-		lastY = 0;
+		lastX = x;
+		lastY = y;
 		
-		disposed = x < 0 || x > terrain.width || y > terrain.width;
+		if (x < 0 || x > terrain.width || y > terrain.height) {
+			disposed = true;
+		}
 	}
 	
 	private function collide( collision: Array<Int>, terrain: PixelTerrain) {
@@ -70,9 +73,12 @@ class DynamicPixel implements IDrawable implements IPhysicsEntity {
 				}
 			}
 			
+			disposed = true;
+			
 		} else {
+			
 			var normal = terrain.getNormal( x2, y2 );
-			var projection = 2 * ( vX * normal[0] + vY * normal[1] );
+			var projection = 2 * ( vX * normal[ 0 ] + vY * normal[ 1 ] );
 			vX -= normal[ 0 ] * projection;
 			vY -= normal[ 1 ] * projection;
 			vX *= BOUNCE_DAMPING;
@@ -83,7 +89,8 @@ class DynamicPixel implements IDrawable implements IPhysicsEntity {
 	}
 	
 	public function drawTo( bd: BitmapData ): Void {
-		bd.setPixel( Std.int( x ), Std.int( y ), color );
+		bd.fillRect( new Rectangle( x - 1, y - 1, 2, 2), color );
+		//bd.setPixel( Std.int( x ), Std.int( y ), color );
 	}
 	
 	public function update(): Void {

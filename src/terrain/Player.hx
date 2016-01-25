@@ -107,7 +107,7 @@ class Player implements IDrawable implements IPhysicsEntity {
 		return Math.random() * (max - min) + min;
 	}
 	
-	private function getRandomVelocity( distance: Float ) {
+	private inline function getRandomVelocity( distance: Float ) {
 		return random( -50, 50 ) + random( 1500, 2500 ) * distance;
 	}
 	
@@ -119,7 +119,7 @@ class Player implements IDrawable implements IPhysicsEntity {
 			var cTimeMs = Timer.stamp() * 1000;
 			var deltaShoot = cTimeMs - lastShootTime;
 			
-			if ( ( shooting && deltaShoot > 150 )  || ( shootingAlt && deltaShoot > 15 ) ) {
+			if ( ( shooting && deltaShoot > 150 )  || ( shootingAlt && deltaShoot > 45 ) ) {
 				
 				var dX = shootTargetX - x;
 				var dY = shootTargetY - y;
@@ -131,17 +131,21 @@ class Player implements IDrawable implements IPhysicsEntity {
 					addBulletDelegate( x, y, 2000 * normalDistanceX, 2000 * normalDistanceY );
 					
 				} else {
-					
-					for ( i in 0...150 ) {
+					var vX = getRandomVelocity( normalDistanceX );
+					var vY = getRandomVelocity( normalDistanceY );
+					trace(vX, vY);
+					//for ( i in 0...10 ) {
 						//var color = Std.int( ( cTimeMs / 5000 ) % 255 );
 						addDynamicPixelDelegate(
 							x, y,
-							getRandomVelocity( normalDistanceX ),
-							getRandomVelocity( normalDistanceY ),
-							0xFF000000,
-							50
+							//getRandomVelocity( normalDistanceX ),
+							//getRandomVelocity( normalDistanceY ),
+							500 * random(1, 5) * normalDistanceX,
+							500 * normalDistanceY,
+							0xFFFF0000,
+							2
 						);
-					}
+					//}
 				}
 				lastShootTime = cTimeMs;
 			}
