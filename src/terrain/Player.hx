@@ -8,18 +8,13 @@ import openfl.geom.Rectangle;
 import src.terrain.definitions.IDrawable;
 import terrain.definitions.IPhysicsEntity;
 import terrain.PixelTerrain;
+import terrain.definitions.Delegates;
 import haxe.Timer;
 
 /**
  * ...
  * @author Ivan Juarez
  */
-
-//x: Float, y: Float, vX: Float, vY: Float
-typedef TBulletDelegate = Float->Float->Float->Float->Void;
-
-//x: Float, y: Float, vX: Float, vY: Float, color: Int, size: Int
-typedef TDynamicPixelDelegate = Float->Float->Float->Float->Int->Int->Void;
 
 class Player implements IDrawable implements IPhysicsEntity {
 	

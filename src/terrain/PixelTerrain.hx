@@ -3,11 +3,13 @@ package terrain;
 import openfl.display.BitmapData;
 import openfl.display.Sprite;
 import src.terrain.definitions.IDrawable;
+import terrain.definitions.Delegates;
 import openfl.Assets;
 /**
  * ...
  * @author Ivan Juarez
  */
+ 
 class PixelTerrain implements IDrawable {
 	private var bitmapData: BitmapData;
 	private var normalsSprite: Sprite;
@@ -15,6 +17,8 @@ class PixelTerrain implements IDrawable {
 	public var normalsVisible: Bool;
 	public var normalsDirty: Bool;
 	public var disposed: Bool;
+	
+	public var addDynamicPixelDelegate: TDynamicPixelDelegate;
 	
 	public var width( get, never ): Int;
 	public var height( get, never ): Int;
@@ -146,11 +150,70 @@ class PixelTerrain implements IDrawable {
 		normalsDirty = false;
 	}
 	
-	public function explode( x: Int, y: Int, radius: Int ) {
-		var radiusSq = radius * radius;
-		trace('Explode:', x, y);
-		
+	public inline function removePixelsRect( x: Int, y: Int, width: Int, height: Int ) {
+		for ( cX in 0...width) {
+			for ( cY in 0...height ) {
+				removePixel( x + cX, y + cY );
+			}
+		}
 	}
+	
+	public function explode( x: Int, y: Int, radius: Int ) {
+		var radiusSqrt = radius * radius;
+		
+		var cX = x - radius;
+		while ( cX < x + radius ) {
+			if ( x > 0 &&  x < width ) {
+				
+				var cY = y - radius;
+				while ( cY < y + radius ) {
+					if ( cY > 0 && cY < height ) {
+						
+						var solid = false;
+						var solidX = 0;
+						var solidY = 0;
+						for ( i in 0...destructionRes ) {
+							for ( j in 0...destructionRes ) {
+								if ( isPixelSolid( cX + i, cY + j ) ) {
+									solid = true;
+									solidX = cX + i;
+									solidY = cY + j;
+									break;
+								}
+							}
+							if (solid) {
+								break;
+							}
+						}
+						
+						if ( solid ) {
+							
+							var xDiff = cX - x;
+							var yDiff = cY - y;
+							var distSqrt = xDiff * xDiff + yDiff * yDiff;
+							
+							if ( distSqrt < radiusSqrt ) {
+								var dist = Math.sqrt( distSqrt );
+								var speed = 800 * ( 1 - dist / radius );
+								
+								dist = dist == 0 ? 0.001 : dist;
+								var vX = speed * ( xDiff + ( Math.random() * 20 - 10 ) ) / dist;
+								var vY = speed * ( yDiff + ( Math.random() * 20 - 10 ) ) / dist;
+								addDynamicPixelDelegate( cX, cY, vX, vY, getColor( cX , cY ), destructionRes);
+								removePixelsRect( cX, cY, destructionRes, destructionRes );
+							}
+							
+						}
+						
+					}
+					cY += destructionRes;
+				}
+				
+			}
+			cX += destructionRes;
+		}
+	}
+	
 	
 	public function get_width() return bitmapData.width;
 	public function get_height() return bitmapData.height;

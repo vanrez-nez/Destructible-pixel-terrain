@@ -21,6 +21,8 @@ import openfl.Lib;
  * ...
  * @author Ivan Juarez
  */
+
+
 class TerrainScene extends Sprite  {
 	
 	
@@ -48,6 +50,7 @@ class TerrainScene extends Sprite  {
 		pixelTerrain = new PixelTerrain( 'img/more-trees.png', 1 );
 		//pixelTerrain.normalsVisible = true;
 		renderer.add( pixelTerrain );
+		pixelTerrain.addDynamicPixelDelegate = onAddDynamicPixel;
 		
 		player = new Player( 15, 25 );
 		player.addBulletDelegate = onAddBullet;
