@@ -25,25 +25,21 @@ class Renderer extends Bitmap {
 		
 		var idx = objects.length;
 		while ( idx-- > 0 ) {
-			
-			var obj = objects[ idx ];
-			
-			if ( obj.disposed ) {
-				remove( obj );
-				
-			} else {
-				obj.update();
-				obj.drawTo( this.bitmapData );
-			}
-			
+			if ( objects[ idx ].disposed )
+				objects.splice( idx, 1);
+		}
+		
+		for ( obj in objects ) {
+			obj.update();
+			obj.drawTo( this.bitmapData );
 		}
 	}
 	
 	public function render() {
-		bitmapData.lock();
+		//bitmapData.lock();
 		bitmapData.fillRect( bitmapData.rect, 0 );
 		draw();
-		bitmapData.unlock();
+		//bitmapData.unlock();
 	}
 	
 	public function add( obj: IDrawable ) {

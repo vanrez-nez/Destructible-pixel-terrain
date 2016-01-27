@@ -100,7 +100,7 @@ class Physics {
 			x = xFrom,
 			y = yFrom;
 			
-		for (cPixel in 0...pixelsCount + 1 ) {
+		for (cPixel in 0...pixelsCount ) {
 			
 			if ( terrain.isPixelSolid( x, y ) )
 				return [ prevX, prevY, x, y ];

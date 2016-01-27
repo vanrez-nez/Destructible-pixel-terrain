@@ -12,8 +12,8 @@ import terrain.PixelTerrain;
  */
 class DynamicPixel implements IDrawable implements IPhysicsEntity {
 	
-	public static var STICKINESS = 900 * 900;
-	public static var BOUNCE_DAMPING = 0.75;
+	public static var STICKINESS = 1500 * 1500;
+	public static var BOUNCE_DAMPING = 0.85;
 	
 	public var x: Float;
 	public var y: Float;
@@ -54,7 +54,7 @@ class DynamicPixel implements IDrawable implements IPhysicsEntity {
 		lastX = x;
 		lastY = y;
 		
-		if (x < 0 || x > terrain.width || y > terrain.height) {
+		if ( x < 0 || x > terrain.width || y > terrain.height ) {
 			disposed = true;
 		}
 	}
@@ -89,8 +89,8 @@ class DynamicPixel implements IDrawable implements IPhysicsEntity {
 	}
 	
 	public function drawTo( bd: BitmapData ): Void {
-		bd.fillRect( new Rectangle( x - 1, y - 1, 2, 2), color );
-		//bd.setPixel( Std.int( x ), Std.int( y ), color );
+		//bd.fillRect( new Rectangle( x, y, 1, 1), color );
+		bd.setPixel32( Std.int( x ), Std.int( y ), color );
 	}
 	
 	public function update(): Void {

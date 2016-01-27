@@ -45,7 +45,7 @@ class TerrainScene extends Sprite  {
 		renderer = new Renderer( 1024, 500 );
 		this.addChild( renderer );
 		
-		pixelTerrain = new PixelTerrain( 'img/more-trees.png', 2 );
+		pixelTerrain = new PixelTerrain( 'img/more-trees.png', 1 );
 		//pixelTerrain.normalsVisible = true;
 		renderer.add( pixelTerrain );
 		

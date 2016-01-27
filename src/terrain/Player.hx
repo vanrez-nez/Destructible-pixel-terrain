@@ -131,21 +131,16 @@ class Player implements IDrawable implements IPhysicsEntity {
 					addBulletDelegate( x, y, 2000 * normalDistanceX, 2000 * normalDistanceY );
 					
 				} else {
-					var vX = getRandomVelocity( normalDistanceX );
-					var vY = getRandomVelocity( normalDistanceY );
-					trace(vX, vY);
-					//for ( i in 0...10 ) {
+					for ( i in 0...150 ) {
 						//var color = Std.int( ( cTimeMs / 5000 ) % 255 );
 						addDynamicPixelDelegate(
 							x, y,
-							//getRandomVelocity( normalDistanceX ),
-							//getRandomVelocity( normalDistanceY ),
-							500 * random(1, 5) * normalDistanceX,
-							500 * normalDistanceY,
+							300 * random(1, 5) * dX / len,
+							300 * random(1, 5) * dY / len,
 							0xFFFF0000,
 							2
 						);
-					//}
+					}
 				}
 				lastShootTime = cTimeMs;
 			}
