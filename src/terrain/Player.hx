@@ -128,13 +128,14 @@ class Player implements IDrawable implements IPhysicsEntity {
 				} else {
 					for ( i in 0...150 ) {
 						//var color = Std.int( ( cTimeMs / 5000 ) % 255 );
+						
 						addDynamicPixelDelegate(
 							x, y,
 							300 * random(1, 5) * dX / len,
 							300 * random(1, 5) * dY / len,
-							0xFFFF0000,
-							2
+							0xFFFF0000
 						);
+						
 					}
 				}
 				lastShootTime = cTimeMs;

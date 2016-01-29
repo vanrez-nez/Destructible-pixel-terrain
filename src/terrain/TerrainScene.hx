@@ -72,9 +72,9 @@ class TerrainScene extends Sprite  {
 		physics.add( bullet );
 	}
 	
-	public function onAddDynamicPixel( x: Float, y: Float, vX: Float, vY: Float, color: Int, size: Int ) {
+	public function onAddDynamicPixel( x: Float, y: Float, vX: Float, vY: Float, color: Int) {
 		//trace('Dynamic!');
-		var dPixel = new DynamicPixel( x, y, vX, vY, color, size );
+		var dPixel = new DynamicPixel( x, y, vX, vY, color, 1);
 		renderer.add( dPixel );
 		physics.add( dPixel );
 	}

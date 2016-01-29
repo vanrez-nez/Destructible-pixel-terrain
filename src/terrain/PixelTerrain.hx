@@ -103,6 +103,12 @@ class PixelTerrain implements IDrawable {
 			}
 		}
 		var len = Math.sqrt( avgX * avgX + avgY * avgY );
+		
+		// avoid dividing by 0
+		if (len == 0) {
+			return [0, 0];
+		}
+		
 		return [ avgX / len, avgY / len ];
 	}
 	
@@ -199,7 +205,7 @@ class PixelTerrain implements IDrawable {
 								dist = dist == 0 ? 0.001 : dist;
 								var vX = speed * ( xDiff + ( Math.random() * 20 - 10 ) ) / dist;
 								var vY = speed * ( yDiff + ( Math.random() * 20 - 10 ) ) / dist;
-								addDynamicPixelDelegate( cX, cY, vX, vY, getColor( cX , cY ), destructionRes);
+								addDynamicPixelDelegate( cX, cY, vX, vY, getColor( cX , cY ));
 								removePixelsRect( cX, cY, destructionRes, destructionRes );
 							}
 							
